@@ -97,7 +97,7 @@ class Visualizer(object):
 
 
     def __init__(self, env='main'):
-        self.vis = visdom.Visdom(env='main')
+        self.vis = visdom.Visdom(env=env)
         self.index = {}
     
     def plot_scalar(self, name, y):
@@ -123,6 +123,9 @@ class Visualizer(object):
         img : array-like but not torch.tensor
         """
         self.vis.image(np.array(img), win=name)
+    
+    def plot_heatmap(self, name, img):
+        self.vis.heatmap(img, win=name)
 
 
 class Logger(object):

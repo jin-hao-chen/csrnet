@@ -4,6 +4,7 @@
 import os
 import time
 import warnings
+import numpy as np
 import torch as t
 import torch.nn as nn
 import json
@@ -17,8 +18,12 @@ class BaseModule(nn.Module):
         self.name = str(self.__class__).split("'")[1].split('.')[-1]
     
     def save(self, root, epoch, loss, max_items=5):
+        if isinstance(loss, np.ndarray):
+            loss = loss.tolist()
+            if isinstance(loss, list):
+                loss = loss[0]
         model_dir = os.path.join(root, self.name)
-        if os.path.exists(model_dir):
+        if not os.path.exists(model_dir):
             os.makedirs(model_dir)
         checkpoints_path = os.path.join(model_dir, 'checkpoints.json')
         if not os.path.exists(checkpoints_path):

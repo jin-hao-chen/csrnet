@@ -40,14 +40,11 @@ def train(**kwargs):
     global model
     if opts.model_path:
         model = model.load(opts.model_path)
-    
-    print(model)
-
     shanghai = Shanghai(opts.data_dir, train=False)
     dataloader = DataLoader(shanghai, batch_size=batch_size, shuffle=True)
     criterion = nn.MSELoss(size_average=False)
     optimizer = optim.SGD(model.parameters(), momentum=0.95, lr=opts.lr, weight_decay=opts.weight_decay)
-    vis = utils.Visualizer()
+    vis = utils.Visualizer(env='main')
     loss_meter = meter.AverageValueMeter()
     for epoch in range(opts.epochs):
         loss_meter.reset()
@@ -71,8 +68,16 @@ def train(**kwargs):
                     utils.tensor2numpy(labels).sum(),
                     (end - start).seconds))
             if (i + 1) % opts.print_seq == 0:
-                print('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, loss_meter.value()[0]))
-        model.save('checkpoints/', epoch + 1, loss)
+                avg_loss = loss_meter.value()[0]
+                print('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, avg_loss))
+                vis.plot_scalar('avg_loss', avg_loss)
+                density_map = utils.tensor2numpy(predicted)
+                density_map = np.reshape(density_map, (density_map.shape[2], density_map.shape[3]))
+                density_map_label = utils.tensor2numpy(labels)
+                density_map_label = np.reshape(density_map_label, (density_map_label.shape[2], density_map_label.shape[3]))
+                vis.plot_heatmap('density_map_label', density_map_label)
+                vis.plot_heatmap('avg_density_map', density_map)
+        model.save('checkpoints/', epoch + 1, utils.tensor2numpy(loss))
         print('----Save weights at epoch %s----' % (epoch + 1))
         lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
         print('====Adjust lr: %s====' % lr)
