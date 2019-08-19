@@ -40,13 +40,14 @@ def train(**kwargs):
     global model
     if opts.model_path:
         model = model.load(opts.model_path)
+        print('Load weights at' + opts.model_path)
     shanghai = Shanghai(opts.data_dir, train=False)
     dataloader = DataLoader(shanghai, batch_size=batch_size, shuffle=True)
     criterion = nn.MSELoss(size_average=False)
     optimizer = optim.SGD(model.parameters(), momentum=0.95, lr=opts.lr, weight_decay=opts.weight_decay)
     vis = utils.Visualizer(env='main')
     loss_meter = meter.AverageValueMeter()
-    for epoch in range(opts.epochs):
+    for epoch in range(9, opts.epochs):
         loss_meter.reset()
         for i, (data, labels) in enumerate(dataloader):
             optimizer.zero_grad()
@@ -79,7 +80,7 @@ def train(**kwargs):
                 vis.plot_heatmap('avg_density_map', density_map)
         model.save('checkpoints/', epoch + 1, utils.tensor2numpy(loss))
         print('----Save weights at epoch %s----' % (epoch + 1))
-        lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
+        # lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
         print('====Adjust lr: %s====' % lr)
         print('Epoch: %s, loss: %s' % (epoch + 1, utils.tensor2numpy(loss)))
         
