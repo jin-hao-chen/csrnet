@@ -67,7 +67,6 @@ def train(**kwargs):
                     utils.tensor2numpy(predicted).sum(), 
                     utils.tensor2numpy(labels).sum(),
                     (end - start).seconds))
-            avg_loss += 
             if (i + 1) % opts.print_seq == 0:
                 avg_loss = loss_meter.value()[0]
                 print('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, avg_loss))
