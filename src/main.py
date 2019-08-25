@@ -34,6 +34,9 @@ def parse_args(func):
         return ret
     return wrapper_fn
 
+def echo(msg):
+    os.system('echo %s' % msg)
+
 @parse_args
 def train(**kwargs):
     opts.parse_args(**kwargs)
@@ -61,7 +64,13 @@ def train(**kwargs):
 
             loss_meter.add(utils.tensor2numpy(loss))
             # vis.plot_scalar('loss', utils.tensor2numpy(loss))
-            print('Iteration: %s, loss: %s, predicted_count: %s, ground_truth: %s, cost_time: %ss' 
+            # print('Iteration: %s, loss: %s, predicted_count: %s, ground_truth: %s, cost_time: %ss' 
+            #     % (i + 1, 
+            #         utils.tensor2numpy(loss), 
+            #         utils.tensor2numpy(predicted).sum(), 
+            #         utils.tensor2numpy(labels).sum(),
+            #         (end - start).seconds))
+             echo('Iteration: %s, loss: %s, predicted_count: %s, ground_truth: %s, cost_time: %ss' 
                 % (i + 1, 
                     utils.tensor2numpy(loss), 
                     utils.tensor2numpy(predicted).sum(), 
@@ -69,7 +78,8 @@ def train(**kwargs):
                     (end - start).seconds))
             if (i + 1) % opts.print_seq == 0:
                 avg_loss = loss_meter.value()[0]
-                print('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, avg_loss))
+                # print('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, avg_loss))
+                echo('Epoch: %s, iteration: %s, avg_loss: %s' % (epoch + 1, i + 1, avg_loss))
                 # vis.plot_scalar('avg_loss', avg_loss)
                 density_map = utils.tensor2numpy(predicted)
                 density_map = np.reshape(density_map, (density_map.shape[2], density_map.shape[3]))
@@ -78,10 +88,12 @@ def train(**kwargs):
                 # vis.plot_heatmap('density_map_label', density_map_label)
                 # vis.plot_heatmap('avg_density_map', density_map)
         model.save('checkpoints/', epoch + 1, utils.tensor2numpy(loss))
-        print('----Save weights at epoch %s----' % (epoch + 1))
+        # print('----Save weights at epoch %s----' % (epoch + 1))
+        echo('----Save weights at epoch %s----' % (epoch + 1))
         # lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
         # print('====Adjust lr: %s====' % lr)
-        print('Epoch: %s, loss: %s' % (epoch + 1, utils.tensor2numpy(loss)))
+        # print('Epoch: %s, loss: %s' % (epoch + 1, utils.tensor2numpy(loss)))
+        echo('Epoch: %s, loss: %s' % (epoch + 1, utils.tensor2numpy(loss)))
         
 
 @parse_args
