@@ -70,7 +70,7 @@ def train(**kwargs):
             #         utils.tensor2numpy(predicted).sum(), 
             #         utils.tensor2numpy(labels).sum(),
             #         (end - start).seconds))
-             echo('Iteration: %s, loss: %s, predicted_count: %s, ground_truth: %s, cost_time: %ss' 
+            echo('Iteration: %s, loss: %s, predicted_count: %s, ground_truth: %s, cost_time: %ss' 
                 % (i + 1, 
                     utils.tensor2numpy(loss), 
                     utils.tensor2numpy(predicted).sum(), 
