@@ -8,9 +8,9 @@ class Config(object):
 
     
     log_dir = './src/logger/'
-    data_dir = './data/ShanghaiTech/part_A/'
+    data_dir = '/kaggle/input/shanghaitechcrowdcountinghdf5version/shanghaitech/ShanghaiTech/part_A/'
     model = 'CSRNet'
-    model_path = './checkpoints/CSRNet/2019-08-19_09-41-28_10.pth'
+    model_path = None
     print_seq = 10
     lr = 1e-6
     lr_decay = 0.90

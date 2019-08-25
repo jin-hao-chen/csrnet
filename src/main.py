@@ -77,7 +77,7 @@ def train(**kwargs):
                 density_map_label = np.reshape(density_map_label, (density_map_label.shape[2], density_map_label.shape[3]))
                 vis.plot_heatmap('density_map_label', density_map_label)
                 vis.plot_heatmap('avg_density_map', density_map)
-        model.save('checkpoints/', epoch + 1, utils.tensor2numpy(loss))
+        model.save('/kaggle/input/checkpoints/', epoch + 1, utils.tensor2numpy(loss))
         print('----Save weights at epoch %s----' % (epoch + 1))
         # lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
         # print('====Adjust lr: %s====' % lr)
