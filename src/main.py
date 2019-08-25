@@ -46,7 +46,7 @@ def train(**kwargs):
     optimizer = optim.SGD(model.parameters(), momentum=0.95, lr=opts.lr, weight_decay=opts.weight_decay)
     # vis = utils.Visualizer(env='main')
     loss_meter = meter.AverageValueMeter()
-    for epoch in range(9, opts.epochs):
+    for epoch in range(opts.epochs):
         loss_meter.reset()
         for i, (data, labels) in enumerate(dataloader):
             optimizer.zero_grad()
