@@ -39,8 +39,7 @@ def train(**kwargs):
     opts.parse_args(**kwargs)
     global model
     if opts.model_path:
-        model = model.load(opts.model_path)
-        print('Load weights at' + opts.model_path)
+        model.load(opts.model_path, debug=True)
     shanghai = Shanghai(opts.data_dir, train=False)
     dataloader = DataLoader(shanghai, batch_size=batch_size, shuffle=True)
     criterion = nn.MSELoss(size_average=False)
@@ -81,7 +80,7 @@ def train(**kwargs):
         model.save('checkpoints/', epoch + 1, utils.tensor2numpy(loss))
         print('----Save weights at epoch %s----' % (epoch + 1))
         # lr = utils.adjust_lr(optimizer, epoch + 1, opts.lr, lr_decay=opts.lr_decay)
-        print('====Adjust lr: %s====' % lr)
+        # print('====Adjust lr: %s====' % lr)
         print('Epoch: %s, loss: %s' % (epoch + 1, utils.tensor2numpy(loss)))
         
 
