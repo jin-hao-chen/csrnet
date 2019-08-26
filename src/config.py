@@ -15,7 +15,7 @@ class Config(object):
     lr = 1e-6
     lr_decay = 0.90
     weight_decay = 5*1e-4
-    epochs = 50
+    epochs = 1
     env = 'main'
     use_gpu = True
 
